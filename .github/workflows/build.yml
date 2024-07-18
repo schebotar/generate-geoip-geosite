@@ -37,15 +37,17 @@ jobs:
 
       - name: Build files
         run: |
-          go run ./ -i ./data -o . --gen-rule-set-srs
+          go run . -s sourceAntifilter.json -i ./antifilter -o ./antifilter --gen-rule-set-srs
 
       - name: Generate sha256 hash
         run: |
-          sha256sum ruleset-domain-antifilter.srs > ruleset-domain-antifilter.srs.sha256sum
-          sha256sum ruleset-ip-antifilter.srs > ruleset-ip-antifilter.srs.sha256sum
+          sha256sum antifilter/ruleset-domain-community.srs > antifilter/ruleset-domain-community.srs.sha256sum
+          sha256sum antifilter/ruleset-domain-domains.srs > antifilter/ruleset-domain-domains.srs.sha256sum
+          sha256sum antifilter/ruleset-ip-allyouneed.srs > antifilter/ruleset-ip-allyouneed.srs.sha256sum
+          sha256sum antifilter/ruleset-ip-community.srs > antifilter/ruleset-ip-community.sha256sum
 
       - name: Release and upload assets
         run: |
-          gh release create ${{ env.TAG_NAME }} --generate-notes --latest --title ${{ env.RELEASE_NAME }} ./ruleset-ip-antifilter.srs ./ruleset-ip-antifilter.srs.* ./ruleset-domain-antifilter.srs ./ruleset-domain-antifilter.srs.*
+          gh release create ${{ env.TAG_NAME }} --generate-notes --latest --title ${{ env.RELEASE_NAME }} antifilter/*.srs.sha256sum antifilter/*.srs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
