@@ -37,15 +37,14 @@ jobs:
 
       - name: Build files
         run: |
-          go run ./ -i ./data -o .
+          go run ./ -i ./data -o . --gen-rule-set-srs
 
       - name: Generate sha256 hash
         run: |
-          sha256sum geoip.db > geoip.db.sha256sum
-          sha256sum geosite.db > geosite.db.sha256sum
+          sha256sum rule-set.srs > rule-set.srs.sha256sum
 
       - name: Release and upload assets
         run: |
-          gh release create ${{ env.TAG_NAME }} --generate-notes --latest --title ${{ env.RELEASE_NAME }} ./geosite.db ./geosite.db.* ./geoip.db ./geoip.db.*
+          gh release create ${{ env.TAG_NAME }} --generate-notes --latest --title ${{ env.RELEASE_NAME }} ./rule-set.srs ./rule-set.srs.*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
