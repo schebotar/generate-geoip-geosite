@@ -41,10 +41,11 @@ jobs:
 
       - name: Generate sha256 hash
         run: |
-          sha256sum rule-set.srs > rule-set.srs.sha256sum
+          sha256sum ruleset-domain-antifilter.srs > ruleset-domain-antifilter.srs.sha256sum
+          sha256sum ruleset-ip-antifilter.srs > ruleset-ip-antifilter.srs.sha256sum
 
       - name: Release and upload assets
         run: |
-          gh release create ${{ env.TAG_NAME }} --generate-notes --latest --title ${{ env.RELEASE_NAME }} ./rule-set.srs ./rule-set.srs.*
+          gh release create ${{ env.TAG_NAME }} --generate-notes --latest --title ${{ env.RELEASE_NAME }} ./ruleset-ip-antifilter.srs ./ruleset-ip-antifilter.srs.* ./ruleset-domain-antifilter.srs ./ruleset-domain-antifilter.srs.*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
